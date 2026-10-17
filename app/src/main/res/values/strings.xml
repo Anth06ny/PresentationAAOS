@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">09_aistroke_android</string>
+    <string name="bt_clear_filter">Clear filter</string>
+    <string name="load_data">Load data</string>
+    <string name="header_title">Weather</string>
+    <string name="header_subtitle">Search a city to see the current conditions</string>
+    <string name="placeholder_search">Search a city…</string>
+    <string name="empty_title">No city yet</string>
+    <string name="empty_message">Type a city name then tap \"Load data\"</string>
+    <string name="wind_speed">Wind %1$.1f m/s</string>
+    <string name="station_id">Station #%1$d</string>
+    <string name="cd_weather_icon">Weather icon</string>
+    <string name="cd_clear_search">Clear search</string>
+</resources>
