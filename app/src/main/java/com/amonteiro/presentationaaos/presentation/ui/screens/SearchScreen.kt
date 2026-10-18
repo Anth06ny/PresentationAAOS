@@ -109,7 +109,7 @@ fun SearchScreenPreview() {
 @Composable
 fun SearchScreen(modifier: Modifier = Modifier, mainViewModel: MainViewModel = viewModel()) {
 
-    var searchText by remember { mutableStateOf("") }
+    val searchText = mainViewModel.searchText.collectAsStateWithLifecycle().value
     val list = mainViewModel.dataList.collectAsStateWithLifecycle().value.filter {
         it.name.contains(searchText, true)
     }
@@ -125,8 +125,8 @@ fun SearchScreen(modifier: Modifier = Modifier, mainViewModel: MainViewModel = v
 
         Header(
             searchText = searchText,
-            onValueChange = { newValue: String -> searchText = newValue },
-            onSearch = { mainViewModel.loadWeathers(searchText) }
+            onValueChange = { mainViewModel.updateSearchText(it) },
+            onSearch = { mainViewModel.loadWeathers() }
         )
 
         AnimatedVisibility(runInProgress) {
@@ -162,8 +162,8 @@ fun SearchScreen(modifier: Modifier = Modifier, mainViewModel: MainViewModel = v
         }
 
         BottomActions(
-            onClear = { searchText = "" },
-            onLoad = { mainViewModel.loadWeathers(searchText) }
+            onClear = { mainViewModel.updateSearchText("") },
+            onLoad = { mainViewModel.loadWeathers() }
         )
     }
 }

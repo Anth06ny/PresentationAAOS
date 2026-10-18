@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Fusionné avec src/main/AndroidManifest.xml uniquement pour le flavor automotive -->
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- Obligatoire pour la piste Automotive OS du Play Store -->
+    <uses-feature
+        android:name="android.hardware.type.automotive"
+        android:required="true" />
+
+    <!-- Fonctionnalités pas forcément présentes dans une voiture : ne pas les exiger -->
+    <uses-feature
+        android:name="android.hardware.wifi"
+        android:required="false" />
+    <uses-feature
+        android:name="android.hardware.screen.portrait"
+        android:required="false" />
+    <uses-feature
+        android:name="android.hardware.screen.landscape"
+        android:required="false" />
+    <uses-feature
+        android:name="android.hardware.camera"
+        android:required="false" />
+
+</manifest>

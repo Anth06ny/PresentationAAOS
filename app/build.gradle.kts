@@ -22,6 +22,17 @@ android {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
+    //Une variante par type d'appareil : phone (Play Store classique) et automotive (piste Automotive OS)
+    flavorDimensions += "device"
+    productFlavors {
+        create("phone") {
+            dimension = "device"
+        }
+        create("automotive") {
+            dimension = "device"
+        }
+    }
+
     buildTypes {
         release {
             optimization {

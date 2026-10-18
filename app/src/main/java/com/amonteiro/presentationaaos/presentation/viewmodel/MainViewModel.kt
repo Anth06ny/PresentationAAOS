@@ -1,14 +1,16 @@
 package com.amonteiro.presentationaaos.presentation.viewmodel
 
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.amonteiro.presentationaaos.data.remote.WeatherApiDataSource
 import com.amonteiro.presentationaaos.domain.Weather
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
-
 
 
 class MainViewModel : ViewModel() {
@@ -16,11 +18,32 @@ class MainViewModel : ViewModel() {
     val dataList = MutableStateFlow(emptyList<Weather>())
     val runInProgress = MutableStateFlow(false)
     val errorMessage = MutableStateFlow("")
+    var searchText = MutableStateFlow("Nice")
 
-//    init {//Création d'un jeu de donnée au démarrage
-//        println("Instanciation de MainViewModel")
-//        loadFakeData()
-//    }
+
+    fun loadWeathers() {
+
+        runInProgress.value = true
+        dataList.value = emptyList()
+        errorMessage.value = ""
+
+        viewModelScope.launch(Dispatchers.IO) {
+            try {
+                dataList.value = WeatherApiDataSource.loadWeather(searchText.value)
+            }
+            catch (e: Exception) {
+                e.printStackTrace()
+                errorMessage.value = e.message ?: "Une erreur est survenue"
+            }
+            finally {
+                runInProgress.value = false
+            }
+        }
+    }
+
+    fun updateSearchText(value:String){
+        searchText.value = value
+    }
 
     fun loadFakeData(runInProgress: Boolean = false, errorMessage: String = "") {
         this.runInProgress.value = runInProgress
@@ -59,26 +82,5 @@ class MainViewModel : ViewModel() {
                 speed = 4.5
             )
         ).shuffled() //shuffled() pour avoir un ordre différent à chaque appel
-    }
-
-
-    fun loadWeathers(cityName: String) {
-
-        runInProgress.value = true
-        dataList.value = emptyList()
-        errorMessage.value = ""
-
-        viewModelScope.launch(Dispatchers.IO) {
-            try {
-                dataList.value = WeatherApiDataSource.loadWeather(cityName)
-            } catch (e: Exception) {
-                e.printStackTrace()
-                errorMessage.value = e.message ?: "Une erreur est survenue"
-            } finally {
-                runInProgress.value = false
-            }
-        }
-
-
     }
 }
