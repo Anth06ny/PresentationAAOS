@@ -81,4 +81,7 @@ dependencies {
     implementation("androidx.compose.material:material-icons-extended")
 
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.7.0")
+
+    implementation("androidx.car.app:app:1.7.+")
+    implementation("androidx.car.app:app-automotive:1.7.+")
 }

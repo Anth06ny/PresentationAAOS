@@ -2,6 +2,10 @@
 <!-- Fusionné avec src/main/AndroidManifest.xml uniquement pour le flavor automotive -->
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
 
+    <uses-permission android:name="android.permission.INTERNET" />
+
+
+
     <!-- Obligatoire pour la piste Automotive OS du Play Store -->
     <uses-feature
         android:name="android.hardware.type.automotive"
