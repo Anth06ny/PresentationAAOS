@@ -82,6 +82,7 @@ dependencies {
 
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.7.0")
 
-    implementation("androidx.car.app:app:1.7.+")
-    implementation("androidx.car.app:app-automotive:1.7.+")
+    //Car App Library : uniquement pour le flavor automotive
+    "automotiveImplementation"("androidx.car.app:app:1.7.+")
+    "automotiveImplementation"("androidx.car.app:app-automotive:1.7.+")
 }

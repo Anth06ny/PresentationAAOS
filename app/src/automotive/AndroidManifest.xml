@@ -25,4 +25,42 @@
         android:name="android.hardware.camera"
         android:required="false" />
 
+    <!-- L'affichage des templates de la Car App Library est assuré par l'hôte du système -->
+    <uses-feature
+        android:name="android.software.car.templates_host"
+        android:required="true" />
+
+    <application>
+
+        <meta-data
+            android:name="androidx.car.app.minCarApiLevel"
+            android:value="1" />
+
+        <!-- Service de la Car App Library, catégorie météo -->
+        <service
+            android:name="com.amonteiro.presentationaaos.car.WeatherCarAppService"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="androidx.car.app.CarAppService" />
+                <category android:name="androidx.car.app.category.WEATHER" />
+            </intent-filter>
+        </service>
+
+        <!-- Activité fournie par app-automotive qui affiche les templates sur Automotive OS -->
+        <activity
+            android:name="androidx.car.app.activity.CarAppActivity"
+            android:exported="true"
+            android:label="@string/app_name"
+            android:launchMode="singleTask"
+            android:theme="@android:style/Theme.DeviceDefault.NoActionBar">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+            <meta-data
+                android:name="distractionOptimized"
+                android:value="true" />
+        </activity>
+    </application>
+
 </manifest>

@@ -1,0 +1,6 @@
+<resources>
+    <string name="car_no_city_match">No city matches your search</string>
+    <string name="car_no_weather">No weather found for %1$s</string>
+    <string name="car_generic_error">An error occurred</string>
+    <string name="car_retry">Retry</string>
+</resources>
