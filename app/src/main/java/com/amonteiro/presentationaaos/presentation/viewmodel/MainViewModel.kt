@@ -1,9 +1,5 @@
 package com.amonteiro.presentationaaos.presentation.viewmodel
 
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.amonteiro.presentationaaos.data.remote.WeatherApiDataSource
@@ -13,7 +9,10 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 
 
-class MainViewModel : ViewModel() {
+
+
+//La source de données est injectée par Koin (voir di/AppModule.kt)
+class MainViewModel(private val weatherApiDataSource: WeatherApiDataSource) : ViewModel() {
     //MutableStateFlow est une donnée observable
     val dataList = MutableStateFlow(emptyList<Weather>())
     val runInProgress = MutableStateFlow(false)
@@ -29,7 +28,7 @@ class MainViewModel : ViewModel() {
 
         viewModelScope.launch(Dispatchers.IO) {
             try {
-                dataList.value = WeatherApiDataSource.loadWeather(searchText.value)
+                dataList.value = weatherApiDataSource.loadWeather(searchText.value)
             }
             catch (e: Exception) {
                 e.printStackTrace()

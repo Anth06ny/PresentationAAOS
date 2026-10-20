@@ -82,6 +82,10 @@ dependencies {
 
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.7.0")
 
+    //Injection de dépendance Koin (+ koinViewModel() pour Compose)
+    implementation("io.insert-koin:koin-android:4.1.1")
+    implementation("io.insert-koin:koin-androidx-compose:4.1.1")
+
     //Car App Library : uniquement pour le flavor automotive
     "automotiveImplementation"("androidx.car.app:app:1.7.+")
     "automotiveImplementation"("androidx.car.app:app-automotive:1.7.+")

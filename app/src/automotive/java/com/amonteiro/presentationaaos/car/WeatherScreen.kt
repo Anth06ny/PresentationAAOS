@@ -14,46 +14,37 @@ import androidx.lifecycle.lifecycleScope
 import com.amonteiro.presentationaaos.R
 import com.amonteiro.presentationaaos.data.remote.WeatherApiDataSource
 import com.amonteiro.presentationaaos.domain.Weather
-import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import kotlin.math.roundToInt
 
 //Écran de résultat : appelle l'API pour la ville choisie puis affiche la météo
 class WeatherScreen(carContext: CarContext, private val city: String) : Screen(carContext) {
 
-    private sealed interface UiState {
-        data object Loading : UiState
-        data class Success(val weathers: List<Weather>) : UiState
-        data class Error(val message: String) : UiState
-    }
-
-    private var uiState: UiState = UiState.Loading
+    var weathers = emptyList<Weather>()
+    var errorMessage = ""
+    var loading = true
+    val weatherApiDataSource = WeatherApiDataSource()
 
     init {
         loadWeather()
     }
 
     private fun loadWeather() {
-        uiState = UiState.Loading
+        loading = true
 
         //Screen est un LifecycleOwner : la requête est annulée si l'écran est fermé
-        lifecycleScope.launch {
-            uiState = try {
-                val weathers = withContext(Dispatchers.IO) { WeatherApiDataSource.loadWeather(city) }
+        lifecycleScope.launch(Dispatchers.IO) {
+            try {
+                weathers = weatherApiDataSource.loadWeather(city)
                 if (weathers.isEmpty()) {
-                    UiState.Error(carContext.getString(R.string.car_no_weather, city))
-                } else {
-                    UiState.Success(weathers)
+                    errorMessage = "Aucun résultat pour $city"
                 }
-            }
-            catch (e: CancellationException) {
-                throw e
-            }
-            catch (e: Exception) {
+            } catch (e: Exception) {
                 e.printStackTrace()
-                UiState.Error(e.message ?: carContext.getString(R.string.car_generic_error))
+                errorMessage = "Une erreur est survenue : ${e.message}"
+            } finally {
+                loading = false
             }
             invalidate()
         }
@@ -65,18 +56,13 @@ class WeatherScreen(carContext: CarContext, private val city: String) : Screen(c
             .setStartHeaderAction(Action.BACK)
             .build()
 
-        return when (val state = uiState) {
-            UiState.Loading -> ListTemplate.Builder()
+        if (loading) {
+            return ListTemplate.Builder()
                 .setHeader(header)
                 .setLoading(true)
                 .build()
-
-            is UiState.Success -> ListTemplate.Builder()
-                .setHeader(header)
-                .setSingleList(buildWeatherList(state.weathers))
-                .build()
-
-            is UiState.Error -> MessageTemplate.Builder(state.message)
+        } else if (errorMessage.isNotBlank()) {
+            return MessageTemplate.Builder(errorMessage)
                 .setHeader(header)
                 .setIcon(CarIcon.ERROR)
                 .addAction(
@@ -89,7 +75,13 @@ class WeatherScreen(carContext: CarContext, private val city: String) : Screen(c
                         .build()
                 )
                 .build()
+        } else {
+            return ListTemplate.Builder()
+                .setHeader(header)
+                .setSingleList(buildWeatherList(weathers))
+                .build()
         }
+
     }
 
     private fun buildWeatherList(weathers: List<Weather>): ItemList {

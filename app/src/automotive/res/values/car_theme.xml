@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Couleurs utilisées par l'hôte pour CarColor.PRIMARY et CarColor.SECONDARY -->
+    <!-- Pas de parent : ce n'est pas un thème Android, l'hôte lit seulement ces 4 valeurs -->
+    <!-- "Dark" = variante pour le mode nuit (fond sombre), donc généralement plus claire -->
+    <style name="CarAppTheme">
+        <item name="carColorPrimary">#E65100</item>
+        <item name="carColorPrimaryDark">#FFB74D</item>
+        <item name="carColorSecondary">#00796B</item>
+        <item name="carColorSecondaryDark">#4DB6AC</item>
+    </style>
+</resources>

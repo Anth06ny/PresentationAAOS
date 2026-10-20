@@ -10,6 +10,7 @@ import androidx.car.app.model.SearchTemplate
 import androidx.car.app.model.Template
 import androidx.car.app.versioning.CarAppApiLevels
 import com.amonteiro.presentationaaos.R
+import com.amonteiro.presentationaaos.data.memory.FrenchCities
 
 //Écran de recherche : propose les grandes villes de France filtrées au fil de la saisie
 class CitySearchScreen(carContext: CarContext) : Screen(carContext) {
@@ -21,7 +22,12 @@ class CitySearchScreen(carContext: CarContext) : Screen(carContext) {
         val itemListBuilder = ItemList.Builder()
             .setNoItemsMessage(carContext.getString(R.string.car_no_city_match))
 
-        FrenchCities.search(searchText).take(getListLimit()).forEach { city ->
+        val listLimit = getListLimit()
+        println("listLimit=$listLimit")
+
+        FrenchCities.search(searchText)
+            //.take(getListLimit())
+            .forEach { city ->
             itemListBuilder.addItem(
                 Row.Builder()
                     .setTitle(city)
@@ -44,7 +50,7 @@ class CitySearchScreen(carContext: CarContext) : Screen(carContext) {
                 }
             }
         })
-            .setHeaderAction(Action.APP_ICON)
+            .setHeaderAction(Action.BACK)
             .setSearchHint(carContext.getString(R.string.placeholder_search))
             .setInitialSearchText(searchText)
             .setShowKeyboardByDefault(false)

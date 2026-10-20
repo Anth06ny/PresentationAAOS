@@ -1,7 +1,5 @@
 package com.amonteiro.presentationaaos.presentation.ui.screens
 
-import android.content.res.Configuration.UI_MODE_NIGHT_YES
-import android.content.res.Configuration.UI_MODE_TYPE_NORMAL
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.expandVertically
@@ -51,7 +49,6 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
@@ -74,40 +71,20 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.lifecycle.viewmodel.compose.viewModel
 import coil3.compose.AsyncImage
 import com.amonteiro.presentationaaos.R
 import com.amonteiro.presentationaaos.domain.Weather
-import com.amonteiro.presentationaaos.presentation.ui.theme.PresentationAAOSTheme
 import com.amonteiro.presentationaaos.presentation.viewmodel.MainViewModel
+import org.koin.androidx.compose.koinViewModel
 import kotlin.math.roundToInt
 
 
-//Code affiché dans la Preview, thème claire, thème sombre
-@Preview(showBackground = true, showSystemUi = true, locale = "fr")
-@Preview(
-    showBackground = true, showSystemUi = true,
-    uiMode = UI_MODE_NIGHT_YES
-            or UI_MODE_TYPE_NORMAL
-)
-@Composable
-fun SearchScreenPreview() {
-    PresentationAAOSTheme {
-        Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-            val viewmodel: MainViewModel = viewModel()
-            viewmodel.loadFakeData(true, "Une erreur")
-
-            SearchScreen(modifier = Modifier.padding(innerPadding), mainViewModel = viewmodel)
-        }
-    }
-}
-
 //Composable représentant l'ensemble de l'écran
 @Composable
-fun SearchScreen(modifier: Modifier = Modifier, mainViewModel: MainViewModel = viewModel()) {
+fun SearchScreen(modifier: Modifier = Modifier, mainViewModel: MainViewModel = koinViewModel()) {
+
 
     val searchText = mainViewModel.searchText.collectAsStateWithLifecycle().value
     val list = mainViewModel.dataList.collectAsStateWithLifecycle().value.filter {

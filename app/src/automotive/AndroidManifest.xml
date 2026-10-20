@@ -36,6 +36,13 @@
             android:name="androidx.car.app.minCarApiLevel"
             android:value="1" />
 
+        <!-- Couleurs primaire/secondaire de l'application pour les templates (voir car_theme.xml) -->
+        <meta-data
+            android:name="androidx.car.app.theme"
+            android:resource="@style/CarAppTheme" />
+
+
+
         <!-- Service de la Car App Library, catégorie météo -->
         <service
             android:name="com.amonteiro.presentationaaos.car.WeatherCarAppService"

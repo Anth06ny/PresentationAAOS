@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">09_aistroke_android</string>
+    <string name="app_name">MyWeather</string>
     <string name="bt_clear_filter">Effacer</string>
     <string name="load_data">Charger</string>
     <string name="header_title">Météo</string>
@@ -8,8 +8,8 @@
     <string name="placeholder_search">Rechercher une ville…</string>
     <string name="empty_title">Aucune ville pour l\'instant</string>
     <string name="empty_message">Saisissez un nom de ville puis appuyez sur \"Charger\"</string>
+    <string name="cd_weather_icon">Icône météo</string>
     <string name="wind_speed">Vent %1$.1f m/s</string>
     <string name="station_id">Station n°%1$d</string>
-    <string name="cd_weather_icon">Icône météo</string>
     <string name="cd_clear_search">Effacer la recherche</string>
 </resources>

@@ -4,4 +4,8 @@
     <string name="car_no_weather">Aucune météo trouvée pour %1$s</string>
     <string name="car_generic_error">Une erreur est survenue</string>
     <string name="car_retry">Réessayer</string>
+    <string name="car_home_title">Accueil</string>
+    <string name="car_weather">Météo</string>
+    <string name="car_weather_pretty">Météo jolie</string>
+    <string name="car_weather_di">Weather DI</string>
 </resources>

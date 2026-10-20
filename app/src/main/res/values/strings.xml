@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">09_aistroke_android</string>
+    <string name="app_name">MyWeather</string>
     <string name="bt_clear_filter">Clear filter</string>
     <string name="load_data">Load data</string>
     <string name="header_title">Weather</string>

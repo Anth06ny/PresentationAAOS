@@ -17,10 +17,12 @@ import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
 
 
-object WeatherApiDataSource {
+class WeatherApiDataSource {
 
-    private const val API_URL =
-        "https://api.openweathermap.org/data/2.5/find?appid=b80967f0a6bd10d23e44848547b26550&units=metric&lang=fr&q="
+    companion object {
+        private const val API_URL =
+            "https://api.openweathermap.org/data/2.5/find?appid=b80967f0a6bd10d23e44848547b26550&units=metric&lang=fr&q="
+    }
 
     //Création et réglage du client
     private val client = HttpClient {

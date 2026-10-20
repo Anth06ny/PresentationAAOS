@@ -1,8 +1,8 @@
-package com.amonteiro.presentationaaos.car
+package com.amonteiro.presentationaaos.data.memory
 
 import java.text.Normalizer
 
-//Les 100 plus grandes villes de France métropolitaine (population municipale INSEE), en dur
+//Les 101 plus grandes villes de France métropolitaine (population municipale INSEE), en dur
 object FrenchCities {
 
     val CITIES = listOf(
@@ -24,8 +24,12 @@ object FrenchCities {
         "Vénissieux", "Ivry-sur-Seine", "Pessac", "Cergy", "La Seyne-sur-Mer",
         "Villeneuve-d'Ascq", "Troyes", "Clichy", "Neuilly-sur-Seine", "Niort",
         "Montauban", "Chambéry", "Pantin", "Sarcelles", "Lorient",
-        "Le Blanc-Mesnil", "Beauvais", "Hyères", "Maisons-Alfort", "Meaux",
-        "Chelles", "Villejuif", "Narbonne", "Épinay-sur-Seine", "Fréjus"
+        "Le Blanc-Mesnil", "Beauvais", "Hyères", "Maisons-Alfort", "Meaux", "Chelles",
+        "Villejuif",
+        "98_Narbonne",
+        "99_Épinay-sur-Seine",
+        "100_Fréjus",
+        "101_Villeneuve-Tolosane"
     )
 
     //Filtre sans tenir compte de la casse, des accents ni des tirets ("saint etienne" -> "Saint-Étienne")
