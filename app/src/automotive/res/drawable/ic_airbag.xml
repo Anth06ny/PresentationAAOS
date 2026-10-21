@@ -1,0 +1,23 @@
+<!-- Icône "airbag" dessinée à la main : passager assis (tête, buste, siège) face à un coussin gonflé -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24">
+    <!-- Tête -->
+    <path
+        android:fillColor="#FFFFFFFF"
+        android:pathData="M4.5,5a2.5,2.5 0 1,0 5,0a2.5,2.5 0 1,0 -5,0z" />
+    <!-- Buste et cuisses -->
+    <path
+        android:fillColor="#FFFFFFFF"
+        android:pathData="M5,9h3v6h6v3H5z" />
+    <!-- Siège -->
+    <path
+        android:fillColor="#FFFFFFFF"
+        android:pathData="M3,20h18v2H3z" />
+    <!-- Coussin gonflé -->
+    <path
+        android:fillColor="#FFFFFFFF"
+        android:pathData="M12.5,7a4.5,4.5 0 1,0 9,0a4.5,4.5 0 1,0 -9,0z" />
+</vector>

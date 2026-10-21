@@ -1,6 +1,7 @@
 package com.amonteiro.presentationaaos.car
 
 import androidx.car.app.CarContext
+import androidx.car.app.CarToast
 import androidx.car.app.Screen
 import androidx.car.app.model.Action
 import androidx.car.app.model.CarColor
@@ -67,6 +68,14 @@ class HomeScreen(carContext: CarContext) : Screen(carContext) {
                     .setTitle(carContext.getString(R.string.car_vhal))
                     .setImage(CarIcon.Builder(IconCompat.createWithResource(carContext, R.drawable.ic_speed)).build())
                     .setOnClickListener { screenManager.push(VHALScreen(carContext)) }
+                    .build()
+            )
+            .addItem(
+                GridItem.Builder()
+                    .setTitle(carContext.getString(R.string.car_airbag))
+                    .setImage(CarIcon.Builder(IconCompat.createWithResource(carContext, R.drawable.ic_airbag)).build())
+                    //Toast affiché par l'hôte, sans changer d'écran
+                    .setOnClickListener { CarToast.makeText(carContext, "Paf", CarToast.LENGTH_SHORT).show() }
                     .build()
             )
             .build()
