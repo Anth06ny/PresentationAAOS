@@ -30,7 +30,6 @@ import com.amonteiro.presentationaaos.data.remote.WeatherApiDataSource
 import com.amonteiro.presentationaaos.domain.Weather
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import kotlin.math.roundToInt
 
 //Copie de WeatherScreen qui montre toutes les personnalisations de couleur possibles
@@ -57,10 +56,9 @@ class WeatherPrettyScreen(carContext: CarContext, private val city: String) : Sc
         errorMessage = "" //Sinon l'erreur précédente reste affichée après un "Réessayer" réussi
 
         //Screen est un LifecycleOwner : la requête est annulée si l'écran est fermé
-        //lifecycleScope tourne sur le thread principal : seule la requête part sur Dispatchers.IO
-        lifecycleScope.launch {
+        lifecycleScope.launch(Dispatchers.IO) {
             try {
-                weathers = withContext(Dispatchers.IO) { weatherApiDataSource.loadWeather(city) }
+                weathers = weatherApiDataSource.loadWeather(city)
                 if (weathers.isEmpty()) {
                     errorMessage = carContext.getString(R.string.car_no_weather, city)
                 }
@@ -74,9 +72,13 @@ class WeatherPrettyScreen(carContext: CarContext, private val city: String) : Sc
                 errorMessage = "${carContext.getString(R.string.car_generic_error)} : ${e.message}"
             } finally {
                 loading = false
+                launch(Dispatchers.Main) {
+                    invalidate()
+                }
             }
-            invalidate()
+
         }
+        invalidate()
     }
 
     private suspend fun loadBitmap(url: String): Bitmap? {
@@ -98,7 +100,6 @@ class WeatherPrettyScreen(carContext: CarContext, private val city: String) : Sc
                     .setIcon(tintedIcon(R.drawable.ic_refresh, CarColor.BLUE))
                     .setOnClickListener {
                         loadWeather()
-                        invalidate()
                     }
                     .build()
             )
@@ -122,7 +123,6 @@ class WeatherPrettyScreen(carContext: CarContext, private val city: String) : Sc
                         .setFlags(Action.FLAG_PRIMARY)
                         .setOnClickListener {
                             loadWeather()
-                            invalidate()
                         }
                         .build()
                 )

@@ -15,6 +15,7 @@ import com.amonteiro.presentationaaos.presentation.ui.theme.PresentationAAOSThem
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         enableEdgeToEdge()
         setContent {
             PresentationAAOSTheme {
@@ -26,6 +27,8 @@ class MainActivity : ComponentActivity() {
                     SearchScreen(
                         modifier = Modifier.padding(innerPadding)
                     )
+
+
                 }
             }
         }

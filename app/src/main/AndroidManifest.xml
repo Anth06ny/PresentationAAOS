@@ -27,7 +27,7 @@
             </intent-filter>
 
             <!-- On indique MainActivity en distractionOptimized pour être utilisé pendant la conduite -->
-<!--            <meta-data android:name="distractionOptimized" android:value="true" />-->
+            <meta-data android:name="distractionOptimized" android:value="false" />
         </activity>
 
         <!-- Car App Library : commun à Android Auto (phone) et Automotive OS -->

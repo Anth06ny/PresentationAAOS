@@ -16,7 +16,6 @@ import com.amonteiro.presentationaaos.data.remote.WeatherApiDataSource
 import com.amonteiro.presentationaaos.domain.Weather
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import kotlin.math.roundToInt
 
 //Écran de résultat : appelle l'API pour la ville choisie puis affiche la météo
@@ -36,10 +35,9 @@ class WeatherScreen(carContext: CarContext, private val city: String) : Screen(c
         errorMessage = "" //Sinon l'erreur précédente reste affichée après un "Réessayer" réussi
 
         //Screen est un LifecycleOwner : la requête est annulée si l'écran est fermé
-        //lifecycleScope tourne sur le thread principal : seule la requête part sur Dispatchers.IO
-        lifecycleScope.launch {
+        lifecycleScope.launch(Dispatchers.IO) {
             try {
-                weathers = withContext(Dispatchers.IO) { weatherApiDataSource.loadWeather(city) }
+                weathers =  weatherApiDataSource.loadWeather(city)
                 if (weathers.isEmpty()) {
                     errorMessage = carContext.getString(R.string.car_no_weather, city)
                 }
@@ -49,8 +47,11 @@ class WeatherScreen(carContext: CarContext, private val city: String) : Screen(c
             } finally {
                 loading = false
             }
-            invalidate()
+            launch(Dispatchers.Main) {
+                invalidate()
+            }
         }
+        invalidate()
     }
 
     override fun onGetTemplate(): Template {
@@ -73,7 +74,6 @@ class WeatherScreen(carContext: CarContext, private val city: String) : Screen(c
                         .setTitle(carContext.getString(R.string.car_retry))
                         .setOnClickListener {
                             loadWeather()
-                            invalidate()
                         }
                         .build()
                 )
