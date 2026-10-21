@@ -11,4 +11,8 @@
     <string name="station_id">Station #%1$d</string>
     <string name="cd_weather_icon">Weather icon</string>
     <string name="cd_clear_search">Clear search</string>
+    <!-- Car App Library (Android Auto et Automotive OS) -->
+    <string name="car_retry">Retry</string>
+    <string name="car_no_weather">No weather found for %1$s</string>
+    <string name="car_generic_error">An error occurred</string>
 </resources>

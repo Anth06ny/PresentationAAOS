@@ -22,8 +22,8 @@ class CitySearchScreen(carContext: CarContext) : Screen(carContext) {
         val itemListBuilder = ItemList.Builder()
             .setNoItemsMessage(carContext.getString(R.string.car_no_city_match))
 
-        val listLimit = getListLimit()
-        println("listLimit=$listLimit")
+//        val listLimit = getListLimit()
+//        println("listLimit=$listLimit")
 
         FrenchCities.search(searchText)
             //.take(getListLimit())
@@ -31,7 +31,9 @@ class CitySearchScreen(carContext: CarContext) : Screen(carContext) {
             itemListBuilder.addItem(
                 Row.Builder()
                     .setTitle(city)
-                    .setOnClickListener { showWeather(city) }
+                    .setOnClickListener {
+                        screenManager.push(WeatherScreen(carContext, city))
+                    }
                     .build()
             )
         }
@@ -46,7 +48,7 @@ class CitySearchScreen(carContext: CarContext) : Screen(carContext) {
             //Validation au clavier : on cherche le texte saisi tel quel
             override fun onSearchSubmitted(searchText: String) {
                 if (searchText.isNotBlank()) {
-                    showWeather(searchText.trim())
+                    screenManager.push(WeatherScreen(carContext, searchText.trim()))
                 }
             }
         })
@@ -58,8 +60,6 @@ class CitySearchScreen(carContext: CarContext) : Screen(carContext) {
             .build()
     }
 
-    private fun showWeather(city: String) =
-        screenManager.push(WeatherScreen(carContext, city))
 
     //Nombre maximum de lignes autorisé par le véhicule (dépend de l'hôte)
     private fun getListLimit(): Int =

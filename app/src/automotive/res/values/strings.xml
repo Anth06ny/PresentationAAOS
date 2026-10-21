@@ -1,10 +1,9 @@
 <resources>
     <string name="car_no_city_match">No city matches your search</string>
-    <string name="car_no_weather">No weather found for %1$s</string>
-    <string name="car_generic_error">An error occurred</string>
-    <string name="car_retry">Retry</string>
     <string name="car_home_title">Home</string>
     <string name="car_weather">Weather</string>
     <string name="car_weather_pretty">Pretty weather</string>
-    <string name="car_weather_di">Weather DI</string>
+    <string name="car_car_service">CarService</string>
+    <string name="car_system_service">SystemService</string>
+    <string name="car_vhal">VHAL</string>
 </resources>

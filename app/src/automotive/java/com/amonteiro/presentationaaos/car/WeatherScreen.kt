@@ -16,6 +16,7 @@ import com.amonteiro.presentationaaos.data.remote.WeatherApiDataSource
 import com.amonteiro.presentationaaos.domain.Weather
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import kotlin.math.roundToInt
 
 //Écran de résultat : appelle l'API pour la ville choisie puis affiche la météo
@@ -32,17 +33,19 @@ class WeatherScreen(carContext: CarContext, private val city: String) : Screen(c
 
     private fun loadWeather() {
         loading = true
+        errorMessage = "" //Sinon l'erreur précédente reste affichée après un "Réessayer" réussi
 
         //Screen est un LifecycleOwner : la requête est annulée si l'écran est fermé
-        lifecycleScope.launch(Dispatchers.IO) {
+        //lifecycleScope tourne sur le thread principal : seule la requête part sur Dispatchers.IO
+        lifecycleScope.launch {
             try {
-                weathers = weatherApiDataSource.loadWeather(city)
+                weathers = withContext(Dispatchers.IO) { weatherApiDataSource.loadWeather(city) }
                 if (weathers.isEmpty()) {
-                    errorMessage = "Aucun résultat pour $city"
+                    errorMessage = carContext.getString(R.string.car_no_weather, city)
                 }
             } catch (e: Exception) {
                 e.printStackTrace()
-                errorMessage = "Une erreur est survenue : ${e.message}"
+                errorMessage = "${carContext.getString(R.string.car_generic_error)} : ${e.message}"
             } finally {
                 loading = false
             }

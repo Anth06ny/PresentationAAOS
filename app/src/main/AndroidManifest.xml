@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <uses-permission android:name="android.permission.INTERNET" />
-
-    <!-- PresentationApp démarre Koin, pour le téléphone comme pour la voiture -->
+    <!-- MyApplication démarre Koin, pour le téléphone comme pour la voiture -->
     <application
         android:name=".MyApplication"
         android:allowBackup="true"
@@ -31,6 +29,36 @@
             <!-- On indique MainActivity en distractionOptimized pour être utilisé pendant la conduite -->
 <!--            <meta-data android:name="distractionOptimized" android:value="true" />-->
         </activity>
+
+        <!-- Car App Library : commun à Android Auto (phone) et Automotive OS -->
+        <!-- Niveau d'API Car App minimum exigé de l'hôte -->
+        <meta-data
+            android:name="androidx.car.app.minCarApiLevel"
+            android:value="1" />
+
+        <!-- Couleurs primaire/secondaire de l'application pour les templates (voir car_theme.xml) -->
+        <meta-data
+            android:name="androidx.car.app.theme"
+            android:resource="@style/CarAppTheme" />
+
+        <!-- Déclare l'application auprès d'Android Auto (voir automotive_app_desc.xml), ignoré sur Automotive OS -->
+        <meta-data
+            android:name="com.google.android.gms.car.application"
+            android:resource="@xml/automotive_app_desc" />
+
+        <!-- Service de la Car App Library, catégorie météo -->
+        <service
+            android:name=".car.WeatherCarAppService"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="androidx.car.app.CarAppService" />
+                <category android:name="androidx.car.app.category.WEATHER" />
+            </intent-filter>
+        </service>
+
     </application>
+
+    <!-- Appels à l'API météo et chargement des icônes -->
+    <uses-permission android:name="android.permission.INTERNET" />
 
 </manifest>

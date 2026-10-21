@@ -2,9 +2,24 @@
 <!-- Fusionné avec src/main/AndroidManifest.xml uniquement pour le flavor automotive -->
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <uses-permission android:name="android.permission.INTERNET" />
+    <!-- CarServiceScreen : CarInfo lit le VHAL via CarPropertyManager -->
+    <uses-permission android:name="android.car.permission.CAR_INFO" />
+    <uses-permission android:name="android.car.permission.CAR_ENERGY_PORTS" />
+    <uses-permission android:name="android.car.permission.READ_CAR_DISPLAY_UNITS" />
+    <!-- Permissions dangereuses : demandées à l'exécution -->
+    <uses-permission android:name="android.car.permission.CAR_SPEED" />
+    <uses-permission android:name="android.car.permission.CAR_ENERGY" />
+    <!-- Réservée aux applications système : le kilométrage restera indisponible -->
+    <uses-permission android:name="android.car.permission.CAR_MILEAGE" />
 
+    <!-- SystemServiceScreen -->
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
+    <!-- VHALScreen : rapport, frein à main, contact (powertrain), température extérieure, mode nuit -->
+    <uses-permission android:name="android.car.permission.CAR_POWERTRAIN" />
+    <uses-permission android:name="android.car.permission.CAR_EXTERIOR_ENVIRONMENT" />
 
     <!-- Obligatoire pour la piste Automotive OS du Play Store -->
     <uses-feature
@@ -32,26 +47,12 @@
 
     <application>
 
-        <meta-data
-            android:name="androidx.car.app.minCarApiLevel"
-            android:value="1" />
+        <!-- Bibliothèque android.car (Car, CarPropertyManager) présente sur Automotive OS -->
+        <uses-library
+            android:name="android.car"
+            android:required="false" />
 
-        <!-- Couleurs primaire/secondaire de l'application pour les templates (voir car_theme.xml) -->
-        <meta-data
-            android:name="androidx.car.app.theme"
-            android:resource="@style/CarAppTheme" />
-
-
-
-        <!-- Service de la Car App Library, catégorie météo -->
-        <service
-            android:name="com.amonteiro.presentationaaos.car.WeatherCarAppService"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="androidx.car.app.CarAppService" />
-                <category android:name="androidx.car.app.category.WEATHER" />
-            </intent-filter>
-        </service>
+        <!-- Le CarAppService et ses meta-data sont communs : voir src/main/AndroidManifest.xml -->
 
         <!-- Activité fournie par app-automotive qui affiche les templates sur Automotive OS -->
         <activity

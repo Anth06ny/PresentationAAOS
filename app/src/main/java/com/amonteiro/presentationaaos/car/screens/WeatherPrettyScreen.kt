@@ -30,6 +30,7 @@ import com.amonteiro.presentationaaos.data.remote.WeatherApiDataSource
 import com.amonteiro.presentationaaos.domain.Weather
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import kotlin.math.roundToInt
 
 //Copie de WeatherScreen qui montre toutes les personnalisations de couleur possibles
@@ -40,6 +41,7 @@ class WeatherPrettyScreen(carContext: CarContext, private val city: String) : Sc
     var icons = emptyMap<String, Bitmap>() //URL -> image téléchargée
     var errorMessage = ""
     var loading = true
+    val weatherApiDataSource = WeatherApiDataSource()
 
 
     //Couleur personnalisée : une valeur pour le thème clair, une pour le thème sombre
@@ -52,21 +54,24 @@ class WeatherPrettyScreen(carContext: CarContext, private val city: String) : Sc
 
     private fun loadWeather() {
         loading = true
+        errorMessage = "" //Sinon l'erreur précédente reste affichée après un "Réessayer" réussi
 
         //Screen est un LifecycleOwner : la requête est annulée si l'écran est fermé
-        lifecycleScope.launch(Dispatchers.IO) {
+        //lifecycleScope tourne sur le thread principal : seule la requête part sur Dispatchers.IO
+        lifecycleScope.launch {
             try {
-                weathers = WeatherApiDataSource().loadWeather(city)
+                weathers = withContext(Dispatchers.IO) { weatherApiDataSource.loadWeather(city) }
                 if (weathers.isEmpty()) {
-                    errorMessage = "Aucun résultat pour $city"
+                    errorMessage = carContext.getString(R.string.car_no_weather, city)
                 }
                 //Un CarIcon n'accepte pas d'URL : on télécharge les images avant d'afficher
+                //(Coil gère lui-même ses threads, execute() ne bloque pas le thread principal)
                 icons = weathers.map { it.icon }.distinct()
                     .mapNotNull { url -> loadBitmap(url)?.let { url to it } }
                     .toMap()
             } catch (e: Exception) {
                 e.printStackTrace()
-                errorMessage = "Une erreur est survenue : ${e.message}"
+                errorMessage = "${carContext.getString(R.string.car_generic_error)} : ${e.message}"
             } finally {
                 loading = false
             }
@@ -92,7 +97,6 @@ class WeatherPrettyScreen(carContext: CarContext, private val city: String) : Sc
                 Action.Builder()
                     .setIcon(tintedIcon(R.drawable.ic_refresh, CarColor.BLUE))
                     .setOnClickListener {
-                        errorMessage = ""
                         loadWeather()
                         invalidate()
                     }
@@ -117,7 +121,6 @@ class WeatherPrettyScreen(carContext: CarContext, private val city: String) : Sc
                         .setBackgroundColor(customOrange)
                         .setFlags(Action.FLAG_PRIMARY)
                         .setOnClickListener {
-                            errorMessage = ""
                             loadWeather()
                             invalidate()
                         }
@@ -130,7 +133,8 @@ class WeatherPrettyScreen(carContext: CarContext, private val city: String) : Sc
                 .setSingleList(buildWeatherList(weathers))
 
             //Bouton flottant (FAB) : icône + couleur de fond obligatoires, Car API 6 minimum
-            if (carContext.carAppApiLevel >= CarAppApiLevels.LEVEL_6) {
+            //Inutile si l'écran est déjà la racine (cas d'Android Auto, où il est le 1er écran)
+            if (carContext.carAppApiLevel >= CarAppApiLevels.LEVEL_6 && screenManager.stackSize > 1) {
                 builder.addAction(
                     Action.Builder()
                         .setIcon(tintedIcon(R.drawable.ic_home, CarColor.createCustom(Color.WHITE, Color.BLACK)))

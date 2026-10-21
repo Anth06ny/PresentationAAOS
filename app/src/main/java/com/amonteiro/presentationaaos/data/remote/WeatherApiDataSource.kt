@@ -9,6 +9,7 @@ import io.ktor.client.plugins.logging.LogLevel
 import io.ktor.client.plugins.logging.Logger
 import io.ktor.client.plugins.logging.Logging
 import io.ktor.client.request.get
+import io.ktor.client.request.parameter
 import io.ktor.client.statement.bodyAsText
 import io.ktor.http.ContentType
 import io.ktor.http.isSuccess
@@ -21,7 +22,7 @@ class WeatherApiDataSource {
 
     companion object {
         private const val API_URL =
-            "https://api.openweathermap.org/data/2.5/find?appid=b80967f0a6bd10d23e44848547b26550&units=metric&lang=fr&q="
+            "https://api.openweathermap.org/data/2.5/find?appid=b80967f0a6bd10d23e44848547b26550&units=metric&lang=fr"
     }
 
     //Création et réglage du client
@@ -43,12 +44,15 @@ class WeatherApiDataSource {
         }
     }
 
-    //GET Le JSON reçu sera parser en UserEntity,
+    //GET Le JSON reçu sera parsé en WeatherAPIResultDTO puis converti en Weather,
     //Crash si le JSON ne correspond pas au type indiqué
     suspend fun loadWeather(cityname: String): List<Weather> {
 
         //Fait la requête
-        val response = client.get(API_URL + cityname)
+        //parameter() encode la valeur : espaces, accents, apostrophes ("La Rochelle", "Villeneuve-d'Ascq")
+        val response = client.get(API_URL) {
+            parameter("q", cityname)
+        }
         if (!response.status.isSuccess()) {
             throw Exception("Erreur API: ${response.status} - ${response.bodyAsText()}")
         }

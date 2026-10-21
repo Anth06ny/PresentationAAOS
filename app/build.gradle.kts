@@ -8,6 +8,9 @@ plugins {
 
 android {
     namespace = "com.amonteiro.presentationaaos"
+
+    //API android.car (CarPropertyManager) fournie par le SDK, utilisée par VHALScreen
+    useLibrary("android.car")
     compileSdk {
         version = release(37)
     }
@@ -86,7 +89,8 @@ dependencies {
     implementation("io.insert-koin:koin-android:4.1.1")
     implementation("io.insert-koin:koin-androidx-compose:4.1.1")
 
-    //Car App Library : uniquement pour le flavor automotive
-    "automotiveImplementation"("androidx.car.app:app:1.7.+")
+    //Car App Library : commune à Android Auto (phone) et Automotive OS
+    implementation("androidx.car.app:app:1.7.+")
+    //Affichage des templates sur Automotive OS (CarAppActivity)
     "automotiveImplementation"("androidx.car.app:app-automotive:1.7.+")
 }

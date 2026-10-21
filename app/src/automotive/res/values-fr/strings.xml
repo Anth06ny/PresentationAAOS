@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="car_no_city_match">Aucune ville ne correspond à votre recherche</string>
-    <string name="car_no_weather">Aucune météo trouvée pour %1$s</string>
-    <string name="car_generic_error">Une erreur est survenue</string>
-    <string name="car_retry">Réessayer</string>
     <string name="car_home_title">Accueil</string>
     <string name="car_weather">Météo</string>
     <string name="car_weather_pretty">Météo jolie</string>
-    <string name="car_weather_di">Weather DI</string>
+    <string name="car_car_service">CarService</string>
+    <string name="car_system_service">SystemService</string>
+    <string name="car_vhal">VHAL</string>
 </resources>

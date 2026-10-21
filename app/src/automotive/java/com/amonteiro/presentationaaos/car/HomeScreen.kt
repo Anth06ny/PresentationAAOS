@@ -12,7 +12,9 @@ import androidx.car.app.model.ItemList
 import androidx.car.app.model.Template
 import androidx.core.graphics.drawable.IconCompat
 import com.amonteiro.presentationaaos.R
-import com.amonteiro.presentationaaos.car.screens.WeatherDIScreen
+import com.amonteiro.presentationaaos.car.screens.CarServiceScreen
+import com.amonteiro.presentationaaos.car.screens.SystemServiceScreen
+import com.amonteiro.presentationaaos.car.screens.VHALScreen
 import com.amonteiro.presentationaaos.car.screens.WeatherPrettyScreen
 
 //Écran d'accueil : grille des fonctionnalités de l'application
@@ -36,24 +38,35 @@ class HomeScreen(carContext: CarContext) : Screen(carContext) {
                             .setTint(CarColor.YELLOW)
                             .build()
                     )
-                    .setOnClickListener { screenManager.push(
-                        WeatherPrettyScreen(
-                            carContext,
-                            "Toulouse"
+                    .setOnClickListener {
+                        screenManager.push(
+                            WeatherPrettyScreen(
+                                carContext,
+                                "Toulouse"
+                            )
                         )
-                    ) }
+                    }
                     .build()
             )
             .addItem(
                 GridItem.Builder()
-                    .setTitle(carContext.getString(R.string.car_weather_di))
-                    .setImage(CarIcon.Builder(IconCompat.createWithResource(carContext, R.drawable.ic_weather)).build())
-                    .setOnClickListener { screenManager.push(
-                        WeatherDIScreen(
-                            carContext,
-                            "Toulouse"
-                        )
-                    ) }
+                    .setTitle(carContext.getString(R.string.car_car_service))
+                    .setImage(CarIcon.Builder(IconCompat.createWithResource(carContext, R.drawable.ic_car)).build())
+                    .setOnClickListener { screenManager.push(CarServiceScreen(carContext)) }
+                    .build()
+            )
+            .addItem(
+                GridItem.Builder()
+                    .setTitle(carContext.getString(R.string.car_system_service))
+                    .setImage(CarIcon.Builder(IconCompat.createWithResource(carContext, R.drawable.ic_memory)).build())
+                    .setOnClickListener { screenManager.push(SystemServiceScreen(carContext)) }
+                    .build()
+            )
+            .addItem(
+                GridItem.Builder()
+                    .setTitle(carContext.getString(R.string.car_vhal))
+                    .setImage(CarIcon.Builder(IconCompat.createWithResource(carContext, R.drawable.ic_speed)).build())
+                    .setOnClickListener { screenManager.push(VHALScreen(carContext)) }
                     .build()
             )
             .build()

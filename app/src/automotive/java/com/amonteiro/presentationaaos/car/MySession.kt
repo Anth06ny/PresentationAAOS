@@ -5,5 +5,5 @@ import androidx.car.app.Screen
 import androidx.car.app.Session
 
 class MySession : Session() {
-    override fun onCreateScreen(intent: Intent): Screen  = CitySearchScreen(carContext)
+    override fun onCreateScreen(intent: Intent): Screen  = HomeScreen(carContext)
 }
