@@ -191,8 +191,12 @@ class WeatherPrettyScreen(carContext: CarContext, private val city: String) : Sc
     private fun windText(weather: Weather): CharSequence {
         //Le 1er caractère est remplacé à l'affichage par l'icône
         val text = SpannableString("  " + carContext.getString(R.string.wind_speed, weather.speed))
+
         text.setSpan(
-            CarIconSpan.create(tintedIcon(R.drawable.ic_air, CarColor.BLUE), CarIconSpan.ALIGN_CENTER),
+            CarIconSpan.create(
+                tintedIcon(R.drawable.ic_air,
+                    CarColor.BLUE  //badcolor
+                ), CarIconSpan.ALIGN_CENTER),
             0, 1, Spanned.SPAN_INCLUSIVE_EXCLUSIVE
         )
         return text

@@ -13,8 +13,16 @@ import com.amonteiro.presentationaaos.presentation.ui.screens.SearchScreen
 import com.amonteiro.presentationaaos.presentation.ui.theme.PresentationAAOSTheme
 
 class MainActivity : ComponentActivity() {
+
+    companion object {
+        //Extra de l'intent : true pour afficher la flèche retour (ouverture depuis HomeScreen de la voiture)
+        const val EXTRA_SHOW_BACK = "EXTRA_SHOW_BACK"
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        val showBack = intent.getBooleanExtra(EXTRA_SHOW_BACK, false)
 
         enableEdgeToEdge()
         setContent {
@@ -25,7 +33,8 @@ class MainActivity : ComponentActivity() {
                     contentWindowInsets = WindowInsets(0, 0, 0, 0)
                 ) { innerPadding ->
                     SearchScreen(
-                        modifier = Modifier.padding(innerPadding)
+                        modifier = Modifier.padding(innerPadding),
+                        showBack = showBack
                     )
 
 

@@ -8,4 +8,5 @@
     <string name="car_system_service">SystemService</string>
     <string name="car_vhal">VHAL</string>
     <string name="car_airbag">AirBag</string>
+    <string name="car_compose_weather">Compose Weather</string>
 </resources>

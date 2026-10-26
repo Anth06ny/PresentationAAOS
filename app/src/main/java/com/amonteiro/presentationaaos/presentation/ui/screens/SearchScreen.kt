@@ -1,5 +1,6 @@
 package com.amonteiro.presentationaaos.presentation.ui.screens
 
+import androidx.activity.compose.LocalActivity
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.expandVertically
@@ -30,6 +31,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.rounded.ArrowBack
 import androidx.compose.material.icons.rounded.Air
 import androidx.compose.material.icons.rounded.Close
 import androidx.compose.material.icons.rounded.CloudQueue
@@ -82,8 +84,13 @@ import kotlin.math.roundToInt
 
 
 //Composable représentant l'ensemble de l'écran
+//showBack : affiche la flèche retour (écran ouvert depuis la version voiture)
 @Composable
-fun SearchScreen(modifier: Modifier = Modifier, mainViewModel: MainViewModel = koinViewModel()) {
+fun SearchScreen(
+    modifier: Modifier = Modifier,
+    showBack: Boolean = false,
+    mainViewModel: MainViewModel = koinViewModel()
+) {
 
 
     val searchText = mainViewModel.searchText.collectAsStateWithLifecycle().value
@@ -92,6 +99,7 @@ fun SearchScreen(modifier: Modifier = Modifier, mainViewModel: MainViewModel = k
     }
     val errorMessage = mainViewModel.errorMessage.collectAsStateWithLifecycle().value
     val runInProgress = mainViewModel.runInProgress.collectAsStateWithLifecycle().value
+    val activity = LocalActivity.current
 
     Column(
         modifier = modifier
@@ -103,7 +111,10 @@ fun SearchScreen(modifier: Modifier = Modifier, mainViewModel: MainViewModel = k
         Header(
             searchText = searchText,
             onValueChange = { mainViewModel.updateSearchText(it) },
-            onSearch = { mainViewModel.loadWeathers() }
+            onSearch = { mainViewModel.loadWeathers() },
+            showBack = showBack,
+            //Termine l'activité qui héberge l'écran (MainActivity)
+            onBack = { activity?.finish() }
         )
 
         AnimatedVisibility(runInProgress) {
@@ -147,7 +158,13 @@ fun SearchScreen(modifier: Modifier = Modifier, mainViewModel: MainViewModel = k
 
 //En-tête en dégradé contenant le titre et la barre de recherche
 @Composable
-fun Header(searchText: String, onValueChange: (String) -> Unit, onSearch: () -> Unit) {
+fun Header(
+    searchText: String,
+    onValueChange: (String) -> Unit,
+    onSearch: () -> Unit,
+    showBack: Boolean = false,
+    onBack: () -> Unit = {}
+) {
     val colors = MaterialTheme.colorScheme
     Column(
         modifier = Modifier
@@ -157,12 +174,23 @@ fun Header(searchText: String, onValueChange: (String) -> Unit, onSearch: () -> 
             .statusBarsPadding()
             .padding(horizontal = 20.dp, vertical = 24.dp)
     ) {
-        Text(
-            text = stringResource(R.string.header_title),
-            style = MaterialTheme.typography.headlineLarge,
-            fontWeight = FontWeight.Bold,
-            color = colors.onPrimary
-        )
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            if (showBack) {
+                IconButton(onClick = onBack) {
+                    Icon(
+                        imageVector = Icons.AutoMirrored.Rounded.ArrowBack,
+                        contentDescription = stringResource(R.string.cd_back),
+                        tint = colors.onPrimary
+                    )
+                }
+            }
+            Text(
+                text = stringResource(R.string.header_title),
+                style = MaterialTheme.typography.headlineLarge,
+                fontWeight = FontWeight.Bold,
+                color = colors.onPrimary
+            )
+        }
         Text(
             text = stringResource(R.string.header_subtitle),
             style = MaterialTheme.typography.bodyMedium,

@@ -146,14 +146,6 @@ class SystemServiceScreen(carContext: CarContext) : Screen(carContext) {
             section(
                 "SENSOR_SERVICE → SensorManager",
                 row(
-                    "Accéléromètre (m/s²)",
-                    when {
-                        accelerometerSensor == null -> "Absent de ce véhicule"
-                        acceleration == null -> "En attente…"
-                        else -> acceleration!!.joinToString(" / ") { "%.1f".format(it) }
-                    }
-                ),
-                row(
                     "Température ambiante",
                     when {
                         temperatureSensor == null -> "Absent : la température extérieure vient du VHAL"
@@ -161,6 +153,14 @@ class SystemServiceScreen(carContext: CarContext) : Screen(carContext) {
                         //L'émulateur envoie -1e30 tant qu'aucune valeur n'est réglée
                         temperature!! !in -100f..100f -> "Aucune valeur (${temperature})"
                         else -> "%.1f °C".format(temperature)
+                    }
+                ),
+                row(
+                    "Accéléromètre (m/s²)",
+                    when {
+                        accelerometerSensor == null -> "Absent de ce véhicule"
+                        acceleration == null -> "En attente…"
+                        else -> acceleration!!.joinToString(" / ") { "%.1f".format(it) }
                     }
                 )
             )

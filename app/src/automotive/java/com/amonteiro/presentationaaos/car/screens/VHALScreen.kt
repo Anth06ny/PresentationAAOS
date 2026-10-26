@@ -31,13 +31,13 @@ class VHALScreen(carContext: CarContext) : Screen(carContext) {
     private class VhalProperty(val id: Int, val label: String, val format: (Any) -> String)
 
     private val properties = listOf(
+        VhalProperty(VehiclePropertyIds.FUEL_LEVEL, "Carburant") { "%.1f L".format((it as Float) / 1000) }, //en mL
         VhalProperty(VehiclePropertyIds.PERF_VEHICLE_SPEED, "Vitesse") { "%.0f km/h".format((it as Float) * 3.6f) },
         VhalProperty(VehiclePropertyIds.GEAR_SELECTION, "Rapport") { gearName(it as Int) },
         VhalProperty(VehiclePropertyIds.PARKING_BRAKE_ON, "Frein à main") { if (it as Boolean) "Serré" else "Desserré" },
         VhalProperty(VehiclePropertyIds.IGNITION_STATE, "Contact") { ignitionName(it as Int) },
         VhalProperty(VehiclePropertyIds.ENV_OUTSIDE_TEMPERATURE, "Température extérieure") { "%.1f °C".format(it as Float) },
         VhalProperty(VehiclePropertyIds.NIGHT_MODE, "Mode nuit") { if (it as Boolean) "Oui" else "Non" },
-        VhalProperty(VehiclePropertyIds.FUEL_LEVEL, "Carburant") { "%.1f L".format((it as Float) / 1000) }, //en mL
         VhalProperty(VehiclePropertyIds.EV_BATTERY_LEVEL, "Batterie") { "%.1f kWh".format((it as Float) / 1000) }, //en Wh
         VhalProperty(VehiclePropertyIds.RANGE_REMAINING, "Autonomie") { "%.0f km".format((it as Float) / 1000) } //en m
     )
